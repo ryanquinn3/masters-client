@@ -4,7 +4,7 @@ import { Card } from 'semantic-ui-react';
 import styled from 'styled-components';
 import slice from 'ramda/src/slice';
 
-import Menu from './Menu';
+import DesktopNavigation from './DesktopNavigation';
 
 const getTopThree = slice(0, 5);
 
@@ -43,7 +43,7 @@ const Panel = ({ match, entrants = [], golfers = [] }) => {
     const [topEntrants, topGolfers] = [entrants, golfers].map(getTopThree);
     return (
         <PanelContainer>
-            <Menu match={match}/>
+            <DesktopNavigation match={match}/>
             <TopGolfersCard
                 title="Tournament Leaders"
                 renderer={renderGolfer}

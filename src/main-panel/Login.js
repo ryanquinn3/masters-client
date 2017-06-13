@@ -3,7 +3,7 @@ import { Form, Container, Header, Grid, Message, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
 
-import { WhiteText } from './theme';
+import { WhiteText } from '../theme';
 export default class Login extends Component {
     
     static isPrivate = false;
@@ -33,7 +33,7 @@ export default class Login extends Component {
                 <Grid.Column mobile={16}>
                    <Message
                     attached
-                    header='Welcome to U.S. Open Pool'
+                    header={'Welcome to PGA Pick\'em'}
                     content='Sign in to make your picks'
                     />
                     <Form as='div' className="attached fluid segment">

@@ -10,19 +10,25 @@ import {
 import { Grid, Sidebar, Menu } from 'semantic-ui-react';
 
 import { BgSegment } from './theme';
-import SidePanel from './SidePanel';
-import Leaderboard from './Leaderboard';
-import BrandPanel from './LeaderboardBanner';
-import Pool from './Pool';
-import Profile from './ProfileView';
+
+import {
+    Leaderboard,
+    EntryForm,
+    Pool,
+    SignUp,
+    Login,
+} from './main-panel';
+
+import {
+    SidePanel,
+    BrandPanel,
+} from './side-panel';
+
 import AuthOnly from './AuthOnly';
-import Login from './Login';
-import SignUp from './SignUp';
-import EntryForm from './EntryForm';
+
 import MobileMenu from './MobileNav';
 import { getMastersLeaderboard } from './api/golfers';
 import { getPoolById } from './api/pools';
-
 
 import './App.css';
 
@@ -68,10 +74,6 @@ const MainContent = ({ entrants, golfers, golfersError, entrantsError, golfersBy
             <Route path="/leaderboard" render={
                 () => <Leaderboard golfers={golfers} error={golfersError}/>
             }/>
-            <Route path="/watchlist" render={
-                () => <Profile golfers={golfers}
-                            entrants={entrants}/>
-            }/>
             <Route path="/login" component={Login} />
             <Route path="/signup" component={SignUp} />
             <Route path="/entry" component={EntryForm}/>
@@ -88,7 +90,8 @@ class App extends Component {
         entrants: [],
         menuOpen: false,
         golfersError: null,
-        entrantsError: null
+        entrantsError: null,
+        user: null,
     };
 
     toggleMenu = () => this.setState({ menuOpen: !this.state.menuOpen });
@@ -138,15 +141,13 @@ class App extends Component {
                             onItemClicked={this.toggleMenu}/>
                         <Sidebar.Pusher>
                             <Grid>
-                                <AuthOnly>
-                                    <Grid.Row>
-                                        <Grid.Column
-                                            only="mobile tablet"
-                                            width={16}>
-                                            <MobileMenu onClick={this.toggleMenu}/>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </AuthOnly>
+                                <Grid.Row>
+                                    <Grid.Column
+                                        only="mobile tablet"
+                                        width={16}>
+                                        <MobileMenu onClick={this.toggleMenu}/>
+                                    </Grid.Column>
+                                </Grid.Row>
                                 <Grid.Row>
                                     <Grid.Column width={3} only="computer">
                                         <BrandPanel {...{ entrants, golfers }}/>

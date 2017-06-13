@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Input, Segment, Message, List, Loader } from 'semantic-ui-react';
 
-import { OnMobile, NotMobile } from './media';
+import { OnMobile, NotMobile } from '../media';
 
 const makeGolfersCell = (golfer, i) => (
     <span key={i} style={{ paddingRight: '3px' }}>

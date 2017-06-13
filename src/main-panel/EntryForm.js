@@ -4,8 +4,8 @@ import { Redirect } from 'react-router-dom';
 
 import Countdown, { getTimeDifference } from 'react-countdown-now';
 
-import { isLoggedIn } from './auth';
-import { WhiteText } from './theme'
+import { isLoggedIn } from '../auth';
+import { WhiteText } from '../theme'
 
 const options = [
   { key: 'tim', text: 'boy', value: 'boy' },

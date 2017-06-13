@@ -3,7 +3,7 @@ import { Form, Container, Header, Grid, Message, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
 
-import { WhiteText } from './theme';
+import { WhiteText } from '../theme';
 
 export default class Login extends Component {
     

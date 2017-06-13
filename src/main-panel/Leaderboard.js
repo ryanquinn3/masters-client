@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Message, List, Segment } from 'semantic-ui-react';
 
-import { OnMobile, NotMobile } from './media';
+import { OnMobile, NotMobile } from '../media';
 
 const rowHeadings = [
     'Place',
