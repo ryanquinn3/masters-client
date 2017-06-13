@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import {
     BrowserRouter as Router,
     Route,
-    Link
+    Link, 
+    Switch,
+    Redirect
 } from 'react-router-dom';
 
 import { Grid, Sidebar, Menu } from 'semantic-ui-react';
@@ -10,9 +12,13 @@ import { Grid, Sidebar, Menu } from 'semantic-ui-react';
 import { BgSegment } from './theme';
 import SidePanel from './SidePanel';
 import Leaderboard from './Leaderboard';
-import LeaderboardBanner from './LeaderboardBanner';
+import BrandPanel from './LeaderboardBanner';
 import Pool from './Pool';
 import Profile from './ProfileView';
+import AuthOnly from './AuthOnly';
+import Login from './Login';
+import SignUp from './SignUp';
+import EntryForm from './EntryForm';
 import MobileMenu from './MobileNav';
 import { getMastersLeaderboard } from './api/golfers';
 import { getPoolById } from './api/pools';
@@ -20,7 +26,7 @@ import { getPoolById } from './api/pools';
 
 import './App.css';
 
-const LeftSideBar = ({ open, onItemClicked }) => (
+const LeftDrawer = ({ open, onItemClicked }) => (
     <Sidebar as={Menu}
              animation='push'
              width='thin'
@@ -40,11 +46,12 @@ const LeftSideBar = ({ open, onItemClicked }) => (
                    name='Leaderboard'>
             Leaderboard
         </Menu.Item>
-        { false && <Menu.Item to="/watchlist"
-                              as={Link}
-                              name='Watchlist'>
-            Watchlist
-        </Menu.Item> }
+        <Menu.Item to="/entry"
+                   as={Link}
+                   onClick={onItemClicked}
+                   name='Your Entry'>
+            Your Entry
+        </Menu.Item>
     </Sidebar>
 );
 
@@ -54,16 +61,22 @@ const MainContent = ({ entrants, golfers, golfersError, entrantsError, golfersBy
                  computer={13}
                  className="main-content"
                  mobile={16}>
-        <Route exact path="/" render={
-            () => <Pool entrants={entrants} error={entrantsError || golfersError }/>
-        }/>
-        <Route path="/leaderboard" render={
-            () => <Leaderboard golfers={golfers} error={golfersError}/>
-        }/>
-        <Route path="/watchlist" render={
-            () => <Profile golfers={golfers}
-                           entrants={entrants}/>
-        }/>
+        <Switch>
+            <Route exact path="/" render={
+                () => <Pool entrants={entrants} error={entrantsError || golfersError }/>
+            }/>
+            <Route path="/leaderboard" render={
+                () => <Leaderboard golfers={golfers} error={golfersError}/>
+            }/>
+            <Route path="/watchlist" render={
+                () => <Profile golfers={golfers}
+                            entrants={entrants}/>
+            }/>
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={SignUp} />
+            <Route path="/entry" component={EntryForm}/>
+            <Redirect to="/login"/>
+        </Switch>
     </Grid.Column>
 )
 
@@ -120,23 +133,25 @@ class App extends Component {
             <Router>
                 <div className="App">
                     <Sidebar.Pushable as={BgSegment}>
-                        <LeftSideBar
+                        <LeftDrawer
                             open={menuOpen}
                             onItemClicked={this.toggleMenu}/>
                         <Sidebar.Pusher>
                             <Grid>
-                                <Grid.Row>
-                                    <Grid.Column
-                                        only="mobile tablet"
-                                        width={16}>
-                                        <MobileMenu onClick={this.toggleMenu}/>
-                                    </Grid.Column>
-                                </Grid.Row>
+                                <AuthOnly>
+                                    <Grid.Row>
+                                        <Grid.Column
+                                            only="mobile tablet"
+                                            width={16}>
+                                            <MobileMenu onClick={this.toggleMenu}/>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </AuthOnly>
                                 <Grid.Row>
                                     <Grid.Column width={3} only="computer">
-                                        <LeaderboardBanner {...{ entrants, golfers }}/>
-                                        <Route path="*" render={
-                                            ({ match }) => <SidePanel {...{ match, entrants, golfers }}/>
+                                        <BrandPanel {...{ entrants, golfers }}/>
+                                            <Route path="*" render={
+                                                ({ match }) => <SidePanel {...{ match, entrants, golfers }}/>
                                         }/>
                                     </Grid.Column>
                                     <MainContent {...{
@@ -150,8 +165,6 @@ class App extends Component {
                             </Grid>
                         </Sidebar.Pusher>
                     </Sidebar.Pushable>
-
-
                 </div>
             </Router>
         );

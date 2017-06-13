@@ -45,7 +45,7 @@ const Panel = ({ match, entrants = [], golfers = [] }) => {
         <PanelContainer>
             <Menu match={match}/>
             <TopGolfersCard
-                title="Masters Leaders"
+                title="Tournament Leaders"
                 renderer={renderGolfer}
                 leaders={topGolfers}/>
             <TopGolfersCard

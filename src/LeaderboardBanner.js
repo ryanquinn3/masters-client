@@ -13,7 +13,7 @@ class SegmentExampleHorizontalSegments extends Component {
                 <OnMobile>
                     <Segment.Group>
                         <Segment>
-                            <Header as='h2'>The Masters</Header> A Tradition Unlike Any Other
+                            <Header as='h2'>The US Open</Header> A Tradition Unlike Any Other
                         </Segment>
                     </Segment.Group>
                 </OnMobile>
@@ -22,7 +22,7 @@ class SegmentExampleHorizontalSegments extends Component {
                         backgroundColor:'#182026',
                         color: 'white'
                     }}>
-                        <Header as='h2' style={{color: 'white'}}>The Masters</Header> A Tradition Unlike Any Other
+                        <Header as='h2' style={{color: 'white'}}>The US Open</Header> A Tradition Unlike Any Other
                     </Segment>
                 </NotMobile>
             </div>

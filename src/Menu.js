@@ -25,12 +25,12 @@ export default class AppMenu extends Component {
                     active={match.url === '/leaderboard'}>
                         Leaderboard
                 </Menu.Item>
-                {showWatchlist && <Menu.Item
-                     as={Link}
-                     to="/watchlist"
-                     active={match.url === '/watchlist'}>
-                        Watchlist
-                </Menu.Item>}
+               <Menu.Item
+                    as={Link}
+                    to="/entry"
+                    active={match.url === '/entry'}>
+                        Your Entry
+                </Menu.Item>
             </Menu>
         )
     }

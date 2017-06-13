@@ -14,7 +14,7 @@ const MobileMenu = ({ onClick }) => (
             <Menu.Header style={{
                 paddingTop: '10px',
                 paddingRight: '10px'
-            }} as="h3">  The Masters </Menu.Header>
+            }} as="h3"> The U.S. Open </Menu.Header>
         </Menu.Menu>
     </Menu>
 );

@@ -1,4 +1,6 @@
 import { Observable } from 'rxjs';
+import { authHttp } from './authHttp';
+import mockData from './fake-data';
 import {
     rootUrl,
     getJson,
@@ -7,23 +9,25 @@ import {
     pollFilter
 } from './config';
 
-const makeRequest = () => fetch(`${rootUrl}api/golfers`).then(getJson)
+const makeRequest = () => authHttp(`${rootUrl}api/golfers`);
 
-const masters$ = Observable.from(makeRequest())
-    .publishReplay(1)
-    .refCount()
-    .share();
+// const masters$ = Observable.from(makeRequest())
+//     .publishReplay(1)
+//     .refCount()
+//     .share();
 
 
 const polling$ = Observable.interval(pollTime)
     .filter(pollFilter)
-    .startWith('')
-    .switchMap(makeRequest)
-    .publishReplay(1)
-    .refCount()
-    .share();
+    // .startWith('')
+    // .switchMap(makeRequest)
+    // .publishReplay(1)
+    // .refCount()
+    // .share();
 
-const getMastersLeaderboard = () => isProd() ? polling$ : masters$;
+const test$ = Observable.of(mockData.golfers);
+
+const getMastersLeaderboard = () => isProd() ? polling$ : test$;
 
 
 export {
