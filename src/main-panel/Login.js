@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Form, Container, Header, Grid, Message, Icon } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
+
+import { isLoggedIn } from '../auth';
 
 import { WhiteText } from '../theme';
 export default class Login extends Component {
@@ -17,7 +19,9 @@ export default class Login extends Component {
     }
 
     onSubmit = () => {
-        alert(JSON.stringify(this.state));
+        if(this.formValid()){
+            this.props.onSubmit(this.state);
+        }  
     }
 
     formValid = () => {
@@ -25,8 +29,24 @@ export default class Login extends Component {
         return password.length > 4 && isEmail(email);
     }
 
+    renderError = () => {
+      if(this.props.error){
+        return ( 
+          <Message attached='bottom' error>
+            <Icon name="warning circle"/>
+            {this.props.error.message}
+          </Message>
+        );
+      }
+      return null;
+    }
+
     render() {
         const { password, email } = this.state;
+        if(isLoggedIn()){
+            return <Redirect to='/entry'/>
+        }
+        const ErrorPanel = this.renderError;
         return (
             <div>
                 <Grid centered columns={1}>
@@ -59,6 +79,7 @@ export default class Login extends Component {
                         <Icon name='help' />
                         Need to make an account?&nbsp;<Link to="/signup">Sign Up</Link>&nbsp;instead.
                     </Message>
+                    <ErrorPanel/>
                 </Grid.Column>
                 </Grid>
             </div>

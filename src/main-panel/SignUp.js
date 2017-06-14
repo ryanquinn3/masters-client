@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Form, Container, Header, Grid, Message, Icon } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
 
+import { isLoggedIn } from '../auth';
 import { WhiteText } from '../theme';
 
-export default class Login extends Component {
+export default class SignUp extends Component {
     
     static isPrivate = false;
 
@@ -21,11 +22,13 @@ export default class Login extends Component {
         this.setState({ [key]: e.target.value });
     }
 
-    onSubmit(){
-
+    onSubmit = () => {
+      if(this.formValid()){
+        this.props.onSubmit(this.state);
+      }
     }
 
-    formValid(){
+    formValid = () => {
        const { firstName, lastName, email, password, passwordConfirm } = this.state;
        return [
          firstName.length,
@@ -36,8 +39,26 @@ export default class Login extends Component {
        ].every(Boolean);
     }
 
+    renderError = () => {
+      if(this.props.error){
+        return ( 
+          <Message attached='bottom' error>
+            <Icon name="warning circle"/>
+            {this.props.error.message}
+          </Message>
+        );
+      }
+      return null;
+    }
+
     render() {
         const { firstName, lastName, email, password, passwordConfirm } = this.state;
+        const { error } = this.props; 
+        const ErrorPanel = this.renderError;
+
+        if(isLoggedIn()){
+            return <Redirect to='/entry'/>
+        }
         return (
             <Container>
               <Grid centered columns={1}>
@@ -82,7 +103,8 @@ export default class Login extends Component {
                   <Message attached='bottom' warning>
                         <Icon name='help' />
                         Already signed up?&nbsp;<Link to="/login">Login</Link>&nbsp;instead.
-                    </Message>
+                  </Message>
+                 <ErrorPanel/>
                 </Grid.Column>
               </Grid>
             </Container>

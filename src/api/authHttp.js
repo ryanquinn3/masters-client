@@ -1,5 +1,6 @@
 
-export const http = (url) => {
+export const http = (url, params = {}) => {
   const token = localStorage.getItem('auth:token');
-  return fetch(`${url}?token=${token}`).then((i) => i.json());
+  const tokenParam = token ? `?token=${token}` : '';
+  return fetch(`${url}${tokenParam}`, params).then((i) => i.json());
 };

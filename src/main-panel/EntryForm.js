@@ -57,6 +57,19 @@ export default class EntryForm extends Component {
     return this.setState({ [key]: { selected: value, options }});
   }
 
+  onSubmit = () => {
+    const { topGolfers, fieldGolfers, birdies } = this.state;
+    if(topGolfers.selected.length != 3 || fieldGolfers.selected.length != 3 || birdies === ''){
+      return alert('To submit your picks, you must choose 3 top 20 golers, 3 field golfers and specify the number of birdies');
+    }
+    return this.props.onSubmit({ 
+      topGolfers: topGolfers.selected, 
+      fieldGolfers: fieldGolfers.selected,
+      numBirdies: birdies
+   });
+
+  }
+
   render(){
     const { topGolfers, fieldGolfers, birdies } = this.state;
     if(!isLoggedIn()){
@@ -109,7 +122,8 @@ export default class EntryForm extends Component {
           </Grid.Row>
            <Grid.Row>
             <Grid.Column>
-              <Form.Button>
+              <Form.Button 
+                onClick={this.onSubmit}>
                 Save
               </Form.Button>
             </Grid.Column>

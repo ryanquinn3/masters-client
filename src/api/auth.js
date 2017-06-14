@@ -1,5 +1,13 @@
-import { getJson } from './config';
+import { getJson, rootUrl } from './config';
 import { setAuthToken } from '../auth';
+
+const handleError = (response) => {
+  if (!response.ok) {
+    return response.text()
+    .then((body) => { throw new Error(body || '404') })
+  }
+  return response;
+} 
 
 const handleToken = (res) => {
   if(res.token){
@@ -10,28 +18,42 @@ const handleToken = (res) => {
 }
 
 const saveUser = (res) => {
-  const { email, firstName, lastName } = res;
-  if(email && firstName && lastName){
-    localStorage.setItem('user', JSON.stringify({ email, firstName, lastName }));
+  const { email, name } = res;
+  if(email && name){
+    localStorage.setItem('user', JSON.stringify({ email, name }));
   }
   return res;
 }
 
-export const makeSignUpRequest = ({ firstName, lastName, email, password }) => {
-  return fetch('/api/signup', {
+export const makeSignUpRequest = ({ firstName, lastName, email, password, passwordConfirm }) => {
+  return fetch(`${rootUrl}api/signup`, {
     method: 'post',
-    body: JSON.stringify({ firstName, lastName, email, password })
+    headers: new Headers({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
+    body: JSON.stringify({ 
+      entrant: {
+          pool_id: 1,
+          name: `${firstName.trim()} ${lastName.trim()}`,
+          email: email.trim(),
+          password: password.trim(),
+          password_confirmation: passwordConfirm.trim()
+      }
+    })
   })
+  .then(handleError)
   .then(getJson)
   .then(handleToken)
-  .then(saveToken);
+  .then(saveUser);
+
 };
 
 export const makeLoginRequest = ({ email, password }) => {
- return fetch('/api/signin', {
-    method: 'post',
+ return fetch(`${rootUrl}api/signin`, {
+    method: 'POST',
+    headers: new Headers({ 'Accept': 'application/json', 'Content-Type': 'application/json' }),
     body: JSON.stringify({ email, password })
   })
+  .then(handleError)
   .then(getJson)
-  .then(saveToken);
+  .then(handleToken)
+  .then(saveUser)
 };

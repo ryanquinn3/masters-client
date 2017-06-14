@@ -1,6 +1,5 @@
-
 const isProd = () => process.env.NODE_ENV === 'production';
-const rootUrl = 'https://themasterspool.club/';
+const rootUrl = isProd() ? '/' : 'https://pgapickem.club/';
 
 const pollTime = 60 * 1000;
 const getJson = (i) => i.json();

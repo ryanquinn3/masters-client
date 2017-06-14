@@ -11,6 +11,8 @@ import { Grid, Sidebar, Menu } from 'semantic-ui-react';
 
 import { BgSegment } from './theme';
 
+import { getUser } from './auth';
+
 import {
     Leaderboard,
     EntryForm,
@@ -24,11 +26,13 @@ import {
     BrandPanel,
 } from './side-panel';
 
+import { makeLoginRequest, makeSignUpRequest } from './api/auth';
+
 import AuthOnly from './AuthOnly';
 
 import MobileMenu from './MobileNav';
 import { getMastersLeaderboard } from './api/golfers';
-import { getPoolById } from './api/pools';
+import { getPoolById, submitEntry } from './api/pools';
 
 import './App.css';
 
@@ -62,7 +66,12 @@ const LeftDrawer = ({ open, onItemClicked }) => (
 );
 
 
-const MainContent = ({ entrants, golfers, golfersError, entrantsError, golfersById }) => (
+const MainContent = ({ 
+    entrants, golfers, golfersError, 
+    entrantsError, golfersById, loginError,
+    onLoginSubmit, onSignUpSubmit, signUpError,
+    onEntrySubmit
+ }) => (
     <Grid.Column largeScreen={13}
                  computer={13}
                  className="main-content"
@@ -74,9 +83,15 @@ const MainContent = ({ entrants, golfers, golfersError, entrantsError, golfersBy
             <Route path="/leaderboard" render={
                 () => <Leaderboard golfers={golfers} error={golfersError}/>
             }/>
-            <Route path="/login" component={Login} />
-            <Route path="/signup" component={SignUp} />
-            <Route path="/entry" component={EntryForm}/>
+            <Route path="/login" render={
+                () => <Login error={loginError} onSubmit={onLoginSubmit} />
+            } />
+            <Route path="/signup" render={
+                () => <SignUp error={signUpError} onSubmit={onSignUpSubmit} />
+            } />
+            <Route path="/entry" render={
+                () => <EntryForm onSubmit={onEntrySubmit}/>
+            }/>
             <Redirect to="/login"/>
         </Switch>
     </Grid.Column>
@@ -91,11 +106,35 @@ class App extends Component {
         menuOpen: false,
         golfersError: null,
         entrantsError: null,
-        user: null,
+        loginError: null,
+        signUpError: null,
+        user: getUser(),
     };
 
     toggleMenu = () => this.setState({ menuOpen: !this.state.menuOpen });
     getGolferById = (id) => this.state.golfersById[id] || { name: 'loading', id: Math.random() }
+
+    onLogin = (formValues) => {
+        return makeLoginRequest(formValues)
+            .then((user) => this.setState({ user, loginError: null }))
+            .catch((error) => this.setState({ loginError: error }));
+    }
+
+    onSignUp = (formValues) => {
+        return makeSignUpRequest(formValues)
+            .then((user) => this.setState({ user, signUpError: null }))
+            .catch((error) => this.setState({ signUpError: error }));
+    }
+    
+    onEntrySubmit = (entry) => {
+        return submitEntry(entry)
+            .then(() => {
+                alert('Your entry was saved successfully');
+            })
+            .catch(() => {
+                alert('An error occurred saving your entry');
+            })
+    }
 
     componentDidMount() {
         this.golfers$ = getMastersLeaderboard()
@@ -123,15 +162,18 @@ class App extends Component {
                 },
                 (entrantsError) => this.setState({ entrantsError })
             );
-
     }
 
     render() {
         const {
-                  entrants, golfers,
-                  golfersError, entrantsError,
-                  menuOpen, golfersById
-              } = this.state;
+         entrants, golfers,
+         golfersError, entrantsError,
+         menuOpen, golfersById, loginError, signUpError, user
+        } = this.state;
+
+        if(user){
+            debugger;
+        }
         return (
             <Router>
                 <div className="App">
@@ -160,7 +202,12 @@ class App extends Component {
                                         golfers,
                                         golfersError,
                                         entrantsError,
-                                        golfersById
+                                        golfersById,
+                                        onLoginSubmit: this.onLogin,
+                                        onSignUpSubmit: this.onSignUp,
+                                        loginError: loginError,
+                                        signUpError: signUpError,
+                                        onEntrySubmit: this.onEntrySubmit
                                     }}/>
                                 </Grid.Row>
                             </Grid>

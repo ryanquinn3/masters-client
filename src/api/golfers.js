@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { authHttp } from './authHttp';
+import { http } from './authHttp';
 import mockData from './fake-data';
 import {
     rootUrl,
@@ -9,7 +9,7 @@ import {
     pollFilter
 } from './config';
 
-const makeRequest = () => authHttp(`${rootUrl}api/golfers`);
+const makeRequest = () => http(`${rootUrl}api/golfers`);
 
 // const masters$ = Observable.from(makeRequest())
 //     .publishReplay(1)
