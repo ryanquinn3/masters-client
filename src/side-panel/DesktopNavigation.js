@@ -21,12 +21,12 @@ const DesktopNavigation = ({ match }) => {
                 active={match.url === '/leaderboard'}>
                     Leaderboard
             </Menu.Item>
-            <Menu.Item
+            {/*<Menu.Item
                 as={Link}
                 to="/entry"
                 active={match.url === '/entry'}>
                     Your Entry
-            </Menu.Item>
+            </Menu.Item>*/}
         </Menu>
     )
 };

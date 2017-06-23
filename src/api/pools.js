@@ -17,11 +17,11 @@ const makeRequest = () => http(`${rootUrl}api/pools/1`);
 
 const polling$ = Observable.interval(pollTime)
     .filter(pollFilter)
-    // .startWith('')
-    // .switchMap(makeRequest)
-    // .publishReplay(1)
-    // .refCount()
-    // .share();
+    .startWith('')
+    .switchMap(makeRequest)
+    .publishReplay(1)
+    .refCount()
+    .share();
 
 const test$ = Observable.of(mockData.pools);
 

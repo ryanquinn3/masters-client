@@ -56,12 +56,12 @@ const LeftDrawer = ({ open, onItemClicked }) => (
                    name='Leaderboard'>
             Leaderboard
         </Menu.Item>
-        <Menu.Item to="/entry"
+        {/*<Menu.Item to="/entry"
                    as={Link}
                    onClick={onItemClicked}
                    name='Your Entry'>
             Your Entry
-        </Menu.Item>
+        </Menu.Item>*/}
     </Sidebar>
 );
 
