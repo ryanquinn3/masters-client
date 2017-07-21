@@ -5,15 +5,11 @@ import {
     rootUrl,
     isProd,
     pollTime,
-    pollFilter
+    pollFilter,
+    useProdServer,
 } from './config';
 
 const makeRequest = () => http(`${rootUrl}api/pools/1`);
-
-// const pool$ = Observable.from(makeRequest())
-//     .publishReplay(1)
-//     .refCount()
-//     .share();
 
 const polling$ = Observable.interval(pollTime)
     .filter(pollFilter)
@@ -25,7 +21,7 @@ const polling$ = Observable.interval(pollTime)
 
 const test$ = Observable.of(mockData.pools);
 
-const getPoolById = () => isProd() ? polling$ : test$;
+const getPoolById = () => (isProd() || useProdServer()) ? polling$ : test$;
 
 
 const submitEntry = (entry) => {

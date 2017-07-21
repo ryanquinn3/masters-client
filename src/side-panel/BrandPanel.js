@@ -20,7 +20,7 @@ const BrandPanel = () => {
                 }}>
                     <Header as='h2' style={{color: 'white'}}>PGA Pick'em</Header>
                     <img 
-                        src="https://res.cloudinary.com/simpleview/image/upload/v1456248701/clients/madison/2017_USOpen_ErinHills_300x300_ffcdd30c-a2eb-4c70-9c93-3dcf5cb9ebca.jpg"
+                        src="https://upload.wikimedia.org/wikipedia/en/8/81/2017_Open_Championship_logo.png"
                         alt=""
                         width="100%"/>
                 </Segment>

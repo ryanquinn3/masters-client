@@ -16,8 +16,8 @@ const Leader = styled.p`
     text-align: left;
 `;
 
-const renderEntrant = (entrant) => `${entrant.position}. ${entrant.name} (${entrant.adjusted_score})`
-const renderGolfer = (golfer) => `${golfer.position}. ${golfer.name} (${golfer.to_par})`;
+const renderEntrant = (entrant) => `${entrant.position || '--'}. ${entrant.name} (${entrant.adjusted_score || '--'})`
+const renderGolfer = (golfer) => `${golfer.position }. ${golfer.name} (${golfer.to_par})`;
 
 const renderLeaderRow = (renderer) => (leader) => (
     <Leader key={leader.name}>

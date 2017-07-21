@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "apollo-client": "^1.5.0",
+    "express": "^4.15.3",
+    "graphql": "^0.10.3",
     "ramda": "^0.23.0",
     "react": "^15.5.4",
     "react-countdown-now": "^1.2.0",
@@ -17,13 +20,18 @@
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
-    "react-scripts": "0.9.5"
+    "body-parser": "^1.17.2",
+    "graphql-server-express": "^0.9.0",
+    "graphql-tools": "^1.0.0",
+    "react-scripts": "1.0.7"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "deploy": "sh deploy.sh"
+    "deploy": "sh deploy.sh",
+    "deploy:nginx": "sh deploy-nginx.sh",
+    "prod:local": "REACT_APP_USE_PROD=true yarn start"
   }
 }

@@ -1,7 +1,7 @@
 import { getJson, rootUrl } from './config';
 import { setAuthToken } from '../auth';
 
-const handleError = (response) => {
+export const handleError = (response) => {
   if (!response.ok) {
     return response.text()
     .then((body) => { throw new Error(body || '404') })

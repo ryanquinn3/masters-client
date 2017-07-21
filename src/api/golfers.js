@@ -6,7 +6,8 @@ import {
     getJson,
     isProd,
     pollTime,
-    pollFilter
+    pollFilter,
+    useProdServer,
 } from './config';
 
 const makeRequest = () => http(`${rootUrl}api/golfers`);
@@ -27,7 +28,7 @@ const polling$ = Observable.interval(pollTime)
 
 const test$ = Observable.of(mockData.golfers);
 
-const getMastersLeaderboard = () => isProd() ? polling$ : test$;
+const getMastersLeaderboard = () => (isProd() || useProdServer()) ? polling$ : test$;
 
 
 export {
