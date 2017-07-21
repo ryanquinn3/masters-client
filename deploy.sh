@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 yarn run build
 
-scp -r ./build/* masters-prod:/usr/share/nginx/html
+scp -r ./build/* pickem:/usr/share/nginx/html

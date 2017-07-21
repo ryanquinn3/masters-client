@@ -1,19 +1,15 @@
+console.log(process.env.NODE_ENV);
 
-const isProd = () => process.env.NODE_ENV === 'production';
-const rootUrl = 'https://themasterspool.club/';
+export const isProd = () => process.env.NODE_ENV === 'production';
+export const useProdServer = () => !!process.env.REACT_APP_USE_PROD;
 
-const pollTime = 60 * 1000;
-const getJson = (i) => i.json();
+export const rootUrl = isProd() ? '/' : 'https://pgapickem.club/';
 
-const pollFilter = () => {
+export const pollTime = 60 * 1000;
+export const getJson = (i) => i.json();
+
+export const pollFilter = () => {
     const utcHours = new Date().getUTCHours();
-    return utcHours > 13 || utcHours < 4;
+    
+    return utcHours > 5 && utcHours < 19;
 }
-
-export {
-    pollFilter,
-    pollTime,
-    isProd,
-    rootUrl,
-    getJson
-};

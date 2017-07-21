@@ -1,18 +1,21 @@
 import { Observable } from 'rxjs';
+import { http } from './authHttp';
+import mockData from './fake-data';
 import {
     rootUrl,
     getJson,
     isProd,
     pollTime,
-    pollFilter
+    pollFilter,
+    useProdServer,
 } from './config';
 
-const makeRequest = () => fetch(`${rootUrl}api/golfers`).then(getJson)
+const makeRequest = () => http(`${rootUrl}api/golfers`);
 
-const masters$ = Observable.from(makeRequest())
-    .publishReplay(1)
-    .refCount()
-    .share();
+// const masters$ = Observable.from(makeRequest())
+//     .publishReplay(1)
+//     .refCount()
+//     .share();
 
 
 const polling$ = Observable.interval(pollTime)
@@ -23,7 +26,9 @@ const polling$ = Observable.interval(pollTime)
     .refCount()
     .share();
 
-const getMastersLeaderboard = () => isProd() ? polling$ : masters$;
+const test$ = Observable.of(mockData.golfers);
+
+const getMastersLeaderboard = () => (isProd() || useProdServer()) ? polling$ : test$;
 
 
 export {

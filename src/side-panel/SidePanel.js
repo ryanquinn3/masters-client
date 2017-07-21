@@ -4,7 +4,7 @@ import { Card } from 'semantic-ui-react';
 import styled from 'styled-components';
 import slice from 'ramda/src/slice';
 
-import Menu from './Menu';
+import DesktopNavigation from './DesktopNavigation';
 
 const getTopThree = slice(0, 5);
 
@@ -16,8 +16,8 @@ const Leader = styled.p`
     text-align: left;
 `;
 
-const renderEntrant = (entrant) => `${entrant.position}. ${entrant.name} (${entrant.adjusted_score})`
-const renderGolfer = (golfer) => `${golfer.position}. ${golfer.name} (${golfer.to_par})`;
+const renderEntrant = (entrant) => `${entrant.position || '--'}. ${entrant.name} (${entrant.adjusted_score || '--'})`
+const renderGolfer = (golfer) => `${golfer.position }. ${golfer.name} (${golfer.to_par})`;
 
 const renderLeaderRow = (renderer) => (leader) => (
     <Leader key={leader.name}>
@@ -43,9 +43,9 @@ const Panel = ({ match, entrants = [], golfers = [] }) => {
     const [topEntrants, topGolfers] = [entrants, golfers].map(getTopThree);
     return (
         <PanelContainer>
-            <Menu match={match}/>
+            <DesktopNavigation match={match}/>
             <TopGolfersCard
-                title="Masters Leaders"
+                title="Tournament Leaders"
                 renderer={renderGolfer}
                 leaders={topGolfers}/>
             <TopGolfersCard

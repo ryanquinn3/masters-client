@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import { Table, Input, Segment, Message, List, Loader } from 'semantic-ui-react';
 
-import { OnMobile, NotMobile } from './media';
+import { OnMobile, NotMobile } from '../media';
 
 const makeGolfersCell = (golfer, i) => (
     <span key={i} style={{ paddingRight: '3px' }}>
@@ -40,12 +41,22 @@ const makeMobileGolferText = (entrant) => (golfer, i) => (
         {golfer.name} ({golfer.to_par})
     </span>
 )
+
+const MobileHeaderRow = styled.div`
+    display: flex;
+    justify-content: space-between;
+`
 const makeMobileEntrantCard = (entrant, i) => (
 
     <List.Item key={entrant.id}>
         <List.Content>
-            <List.Header>{entrant.position}. {entrant.name} ({entrant.adjusted_score})</List.Header>
-            <br/> {entrant.golfers.map(makeMobileGolferText(entrant))}<br/>Birdies: {entrant.number_of_birdies}
+            <List.Header>
+                <MobileHeaderRow>
+                    <div>{entrant.position}. {entrant.name} ({entrant.adjusted_score})</div>
+                    <div>Birdies: {entrant.number_of_birdies}</div>
+                </MobileHeaderRow>
+            </List.Header>
+            <br/> {entrant.golfers.map(makeMobileGolferText(entrant))}
         </List.Content>
     </List.Item>
 )

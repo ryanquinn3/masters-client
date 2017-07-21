@@ -1,18 +1,15 @@
 import { Observable } from 'rxjs';
+import { http } from './authHttp';
+import mockData from './fake-data';
 import {
     rootUrl,
-    getJson,
     isProd,
     pollTime,
-    pollFilter
+    pollFilter,
+    useProdServer,
 } from './config';
 
-const makeRequest = () => fetch(`${rootUrl}api/pools/1`).then(getJson);
-
-const pool$ = Observable.from(makeRequest())
-    .publishReplay(1)
-    .refCount()
-    .share();
+const makeRequest = () => http(`${rootUrl}api/pools/1`);
 
 const polling$ = Observable.interval(pollTime)
     .filter(pollFilter)
@@ -22,8 +19,23 @@ const polling$ = Observable.interval(pollTime)
     .refCount()
     .share();
 
-const getPoolById = () => isProd() ? polling$ : pool$;
+const test$ = Observable.of(mockData.pools);
+
+const getPoolById = () => (isProd() || useProdServer()) ? polling$ : test$;
+
+
+const submitEntry = (entry) => {
+    return http(`${rootUrl}api/pools/1/entries`, {
+        method: 'post',
+        body: JSON.stringify({
+            top_golfers: entry.topGolfers,
+            field_golers: entry.fieldGolfers,
+            num_birdies: entry.numBirdies
+        })
+    })
+};
 
 export {
-    getPoolById
+    getPoolById,
+    submitEntry
 }
